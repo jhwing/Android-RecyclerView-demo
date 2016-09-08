@@ -1,5 +1,6 @@
 package stark.recyclerview.demo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +13,11 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    String[] sList = new String[]{
-            "item a",
-            "item b",
-            "item c",
-            "item d",
-            "item e",
-            "item f",
-            "item g",
-            "item h"};
+    ListBean[] sList = new ListBean[]{
+            new ListBean("header and footer view", HeaderAndFooterActivity.class),
+            new ListBean("header and footer view", HeaderAndFooterActivity.class),
+            new ListBean("header and footer view", HeaderAndFooterActivity.class)
+    };
 
     Toolbar toolbar;
 
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.itemText.setText(sList[position]);
+            holder.itemText.setText(sList[position].title);
         }
 
         @Override
@@ -70,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
             public MyViewHolder(View itemView) {
                 super(itemView);
                 itemText = (TextView) itemView.findViewById(R.id.itemText);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(MainActivity.this, sList[getLayoutPosition()].clazz));
+                    }
+                });
             }
         }
     }
