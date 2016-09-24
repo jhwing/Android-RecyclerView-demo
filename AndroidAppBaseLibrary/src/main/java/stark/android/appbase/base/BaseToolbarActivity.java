@@ -18,7 +18,6 @@ public abstract class BaseToolbarActivity<T> extends BaseActivity<T> {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         setToolbar(toolbar);
     }

@@ -1,25 +1,25 @@
-package stark.recyclerview.demo;
+package stark.recyclerview.demo.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+import stark.android.appbase.base.BaseToolbarActivity;
+import stark.recyclerview.demo.ListBean;
+import stark.recyclerview.demo.R;
+
+public class MainActivity extends BaseToolbarActivity {
 
     ListBean[] sList = new ListBean[]{
             new ListBean("header and footer view", HeaderAndFooterActivity.class),
-            new ListBean("header and footer view", HeaderAndFooterActivity.class),
+            new ListBean("multi types list", MultiTypesListActivity.class),
             new ListBean("header and footer view", HeaderAndFooterActivity.class)
     };
-
-    Toolbar toolbar;
 
     RecyclerView recyclerView;
 
@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         myAdapter = new MyAdapter();
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.itemText.setText(sList[position].title);
+            holder.button.setText(sList[position].title);
         }
 
         @Override
@@ -62,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
         class MyViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView itemText;
+            public Button button;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                itemText = (TextView) itemView.findViewById(R.id.itemText);
-                itemView.setOnClickListener(new View.OnClickListener() {
+                button = (Button) itemView.findViewById(R.id.itemButton);
+                button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         startActivity(new Intent(MainActivity.this, sList[getLayoutPosition()].clazz));
