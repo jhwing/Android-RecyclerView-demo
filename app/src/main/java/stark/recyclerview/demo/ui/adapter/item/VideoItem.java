@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import stark.recyclerview.demo.R;
-import stark.recyclerview.demo.player.PlayListHelper;
 import stark.recyclerview.demo.ui.adapter.Sample;
 
 /**

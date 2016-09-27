@@ -1,9 +1,12 @@
 package stark.android.appbase.widget.recyclerview;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import stark.android.appbase.R;
 
 /**
  * Created by jihongwen on 16/9/24.
@@ -19,11 +22,15 @@ public abstract class BaseItem<T> implements ItemInterface<T>, ActiveItem {
 
     protected int viewType;
 
+    protected Context mContext;
+
     public BaseItem(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         this.viewType = viewType;
         mInflater = LayoutInflater.from(parent.getContext());
         rootView = mInflater.inflate(getRes(), parent, false);
         rootView.setTag(this);
+        rootView.setTag(R.id.base_item_tag, this);
         rootView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {

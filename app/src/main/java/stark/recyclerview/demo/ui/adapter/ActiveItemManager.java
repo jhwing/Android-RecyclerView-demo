@@ -7,6 +7,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 import stark.android.appbase.widget.recyclerview.BaseItem;
+import stark.recyclerview.demo.R;
 
 /**
  * Created by jihongwen on 16/9/26.
@@ -54,7 +55,7 @@ public class ActiveItemManager {
     private void checkActive() {
         for (int i = 0; i < activeView.size(); i++) {
             View view = activeView.get(i);
-            BaseItem baseItem = (BaseItem) view.getTag();
+            BaseItem baseItem = (BaseItem) view.getTag(R.id.base_item_tag);
             int percent = baseItem.getVisibilityPercents(view);
             if (percent > 50) {
                 baseItem.onActive(view);
