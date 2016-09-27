@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import stark.recyclerview.demo.R;
+import stark.recyclerview.demo.ui.adapter.PlayHelper;
 import stark.recyclerview.demo.ui.adapter.Sample;
 
 /**
@@ -15,6 +16,10 @@ import stark.recyclerview.demo.ui.adapter.Sample;
 public class VideoItem extends DefaultItem {
 
     ImageView item_icon;
+
+    Sample sample;
+
+    boolean isViewAttached;
 
     public VideoItem(ViewGroup parent, int viewType) {
         super(parent, viewType);
@@ -35,17 +40,44 @@ public class VideoItem extends DefaultItem {
     @Override
     public void onBindView(final Sample sample, final RecyclerView.ViewHolder viewHolder) {
         super.onBindView(sample, viewHolder);
+        this.sample = sample;
         item_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                item_icon.setImageResource(R.drawable.video_pause_btn);
-//                sample.isPlay = true;
+                item_icon.setImageResource(R.drawable.video_pause_btn);
+                PlayHelper.startPlay(sample, viewHolder.getLayoutPosition());
             }
         });
         if (sample.isPlay) {
             item_icon.setImageResource(R.drawable.video_pause_btn);
+            item_bg.setVisibility(View.GONE);
         } else {
             item_icon.setImageResource(R.drawable.video_play_btn);
+            item_bg.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onActive(View view, int position) {
+        super.onActive(view, position);
+        if (isViewAttached) {
+            PlayHelper.startPlay(sample, position);
+        }
+    }
+
+    @Override
+    public void onDeactivate(View view, int position) {
+        super.onDeactivate(view, position);
+        PlayHelper.stopPlay();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View v) {
+        isViewAttached = true;
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        isViewAttached = false;
     }
 }

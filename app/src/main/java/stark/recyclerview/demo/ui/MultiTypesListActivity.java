@@ -23,21 +23,21 @@ import stark.recyclerview.demo.ui.adapter.ViewType;
 public class MultiTypesListActivity extends BaseSubToolbarActivity {
 
     Sample[] sList = new Sample[]{
-            new Sample("item a", "text"),
-            new Sample("item b", "image"),
-            new Sample("item c", "video"),
-            new Sample("item d", "text"),
-            new Sample("item e", "image"),
-            new Sample("item f", "video"),
-            new Sample("item g", "text"),
-            new Sample("item h", "image"),
-            new Sample("item i", "video"),
-            new Sample("item j", "text"),
-            new Sample("item k", "image"),
-            new Sample("item l", "video"),
-            new Sample("item m", "text"),
-            new Sample("item n", "image"),
-            new Sample("item o", "video")
+            new Sample(0, "item a", "video"),
+            new Sample(1, "item b", "video"),
+            new Sample(2, "item c", "video"),
+            new Sample(3, "item d", "video"),
+            new Sample(4, "item e", "video"),
+            new Sample(5, "item f", "video"),
+            new Sample(6, "item g", "video"),
+            new Sample(7, "item h", "video"),
+            new Sample(8, "item i", "video"),
+            new Sample(9, "item j", "video"),
+            new Sample(10, "item k", "video"),
+            new Sample(11, "item l", "video"),
+            new Sample(12, "item m", "video"),
+            new Sample(13, "item n", "video"),
+            new Sample(14, "item o", "video")
     };
 
     RecyclerView recyclerView;

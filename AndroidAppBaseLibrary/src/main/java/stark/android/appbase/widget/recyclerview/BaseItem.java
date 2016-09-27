@@ -24,6 +24,25 @@ public abstract class BaseItem<T> implements ItemInterface<T>, ActiveItem {
         mInflater = LayoutInflater.from(parent.getContext());
         rootView = mInflater.inflate(getRes(), parent, false);
         rootView.setTag(this);
+        rootView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                BaseItem.this.onViewAttachedToWindow(v);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                BaseItem.this.onViewDetachedFromWindow(v);
+            }
+        });
+    }
+
+    public void onViewAttachedToWindow(View v) {
+
+    }
+
+    public void onViewDetachedFromWindow(View v) {
+
     }
 
     @Override

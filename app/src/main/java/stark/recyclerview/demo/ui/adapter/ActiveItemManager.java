@@ -14,12 +14,11 @@ import stark.android.appbase.widget.recyclerview.BaseItem;
 public class ActiveItemManager {
 
     public enum ScrollDirection {
-        UP, DOWN
+        UP, DOWN, IDLE
     }
 
     ScrollDirection scrollDirection;
 
-    int mPosition = -1;
     int mNewState = RecyclerView.SCROLL_STATE_IDLE;
     int firstVisiblePosition;
     int lastVisiblePosition;
@@ -27,37 +26,79 @@ public class ActiveItemManager {
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         if (dy > 0) {
             scrollDirection = ScrollDirection.UP;
-        } else {
+        } else if ((dy < 0)) {
             scrollDirection = ScrollDirection.DOWN;
+        } else {
+            scrollDirection = ScrollDirection.IDLE;
         }
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+        lastVisiblePosition = linearLayoutManager.findLastVisibleItemPosition();
+        int visibleItemCount = lastVisiblePosition - firstVisiblePosition + 1;
+        Log.d("jihongwen", "firstVisiblePosition:" + firstVisiblePosition);
+        Log.d("jihongwen", "lastVisiblePosition:" + lastVisiblePosition);
+        Log.d("jihongwen", "visibleItemCount:" + visibleItemCount);
+
+        int state = recyclerView.getScrollState();
+        switch (state) {
+            case RecyclerView.SCROLL_STATE_IDLE:
+            case RecyclerView.SCROLL_STATE_DRAGGING:
+            case RecyclerView.SCROLL_STATE_SETTLING:
+                for (int i = 0; i < visibleItemCount; i++) {
+                    View view = recyclerView.getChildAt(i);
+                    BaseItem baseItem = (BaseItem) view.getTag();
+                    if (baseItem.getViewType() == ViewType.VIDEO) {
+                        Log.d("jihongwen", "onScrolled video item " + i);
+                        int percents = baseItem.getVisibilityPercents(view);
+                        if (percents > 50) {
+                            baseItem.onActive(view, i);
+                        } else {
+                            baseItem.onDeactivate(view, i);
+                        }
+                    } else {
+                        Log.d("jihongwen", "onScrolled ViewType not video " + i);
+                    }
+                }
+                Log.d("jihongwen", "onScrolled SCROLL_STATE_IDLE");
+                break;
+//            case RecyclerView.SCROLL_STATE_DRAGGING:
+//            case RecyclerView.SCROLL_STATE_SETTLING:
+
+        }
+
+
     }
 
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        firstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-        lastVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-
+        firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+        lastVisiblePosition = linearLayoutManager.findLastVisibleItemPosition();
+        int visibleItemCount = lastVisiblePosition - firstVisiblePosition + 1;
 
         mNewState = newState;
         switch (mNewState) {
             case RecyclerView.SCROLL_STATE_IDLE:
-                Log.d("jihongwen", "mNewState: SCROLL_STATE_IDLE");
-                View firstView = linearLayoutManager.findViewByPosition(firstVisiblePosition);
-                if (firstView.getTag() != null) {
-                    BaseItem baseItem = (BaseItem) firstView.getTag();
-                    int percents = baseItem.getVisibilityPercents(firstView);
-                    if (baseItem.getViewType() == ViewType.VIDEO) {
-                        if (percents < 50) {
-                            baseItem.onDeactivate(firstView, firstVisiblePosition);
-                        } else {
-                            baseItem.onActive(firstView, firstVisiblePosition);
-                        }
+                scrollDirection = ScrollDirection.IDLE;
+                for (int i = 0; i < visibleItemCount; i++) {
+                    View view = recyclerView.getChildAt(i);
+                    if (view == null) {
+                        Log.d("jihongwen", "onScrolled view is null " + i);
+                        continue;
                     }
-                    Log.d("jihongwen", "firstView baseItem:" + baseItem);
-                    Log.d("jihongwen", "firstView percents:" + percents);
-                } else {
-                    Log.d("jihongwen", "firstView baseItem: is null");
+                    BaseItem baseItem = (BaseItem) view.getTag();
+                    if (baseItem.getViewType() == ViewType.VIDEO) {
+                        Log.d("jihongwen", "onScrollStateChanged video item " + i);
+                        int percents = baseItem.getVisibilityPercents(view);
+                        if (percents > 50) {
+                            baseItem.onActive(view, i);
+                        } else {
+                            baseItem.onDeactivate(view, i);
+                        }
+                    } else {
+                        Log.d("jihongwen", "onScrolled ViewType not video " + i);
+                    }
                 }
+                Log.d("jihongwen", "onScrollStateChanged SCROLL_STATE_IDLE");
 
                 switch (scrollDirection) {
                     case UP:
