@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import stark.recyclerview.demo.R;
-import stark.recyclerview.demo.ui.adapter.PlayHelper;
+import stark.recyclerview.demo.player.PlayListHelper;
 import stark.recyclerview.demo.ui.adapter.Sample;
 
 /**
@@ -45,7 +45,6 @@ public class VideoItem extends DefaultItem {
             @Override
             public void onClick(View v) {
                 item_icon.setImageResource(R.drawable.video_pause_btn);
-                PlayHelper.startPlay(sample, viewHolder.getLayoutPosition());
             }
         });
         if (sample.isPlay) {
@@ -58,17 +57,16 @@ public class VideoItem extends DefaultItem {
     }
 
     @Override
-    public void onActive(View view, int position) {
-        super.onActive(view, position);
+    public void onActive(View view) {
+        super.onActive(view);
         if (isViewAttached) {
-            PlayHelper.startPlay(sample, position);
         }
     }
 
     @Override
-    public void onDeactivate(View view, int position) {
-        super.onDeactivate(view, position);
-        PlayHelper.stopPlay();
+    public void onDeactivate(View view) {
+        super.onDeactivate(view);
+        item_icon.setImageResource(R.drawable.video_play_btn);
     }
 
     @Override

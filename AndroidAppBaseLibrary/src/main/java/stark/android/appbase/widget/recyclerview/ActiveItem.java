@@ -8,9 +8,9 @@ import android.view.View;
 
 public interface ActiveItem {
 
-    void onActive(View view, int position);
+    void onActive(View view);
 
-    void onDeactivate(View view, int position);
+    void onDeactivate(View view);
 
     int getVisibilityPercents(View view);
 }

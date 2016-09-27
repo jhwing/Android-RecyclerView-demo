@@ -1,6 +1,7 @@
 package stark.recyclerview.demo.ui.adapter.item;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ public class DefaultItem extends BaseItem<Sample> {
     protected View item_bg;
 
     protected TextView content;
+
+    boolean isShow = false;
 
     public DefaultItem(ViewGroup parent, int viewType) {
         super(parent, viewType);
@@ -40,12 +43,18 @@ public class DefaultItem extends BaseItem<Sample> {
     }
 
     @Override
-    public void onActive(View view, int position) {
+    public void onActive(View view) {
+        if (!isShow) {
+            isShow = true;
+            Log.d("jihongwen", "onActive content:" + content.getText());
+        }
         item_bg.setVisibility(View.GONE);
     }
 
     @Override
-    public void onDeactivate(View view, int position) {
+    public void onDeactivate(View view) {
+        isShow = false;
+        Log.d("jihongwen", "onDeactivate content:" + content.getText());
         item_bg.setVisibility(View.VISIBLE);
     }
 

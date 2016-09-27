@@ -25,18 +25,18 @@ public class MultiTypesListActivity extends BaseSubToolbarActivity {
     Sample[] sList = new Sample[]{
             new Sample(0, "item a", "video"),
             new Sample(1, "item b", "video"),
-            new Sample(2, "item c", "video"),
-            new Sample(3, "item d", "video"),
-            new Sample(4, "item e", "video"),
-            new Sample(5, "item f", "video"),
+            new Sample(2, "item c", "text"),
+            new Sample(3, "item d", "image"),
+            new Sample(4, "item e", "image"),
+            new Sample(5, "item f", "image"),
             new Sample(6, "item g", "video"),
             new Sample(7, "item h", "video"),
-            new Sample(8, "item i", "video"),
-            new Sample(9, "item j", "video"),
-            new Sample(10, "item k", "video"),
-            new Sample(11, "item l", "video"),
+            new Sample(8, "item i", "text"),
+            new Sample(9, "item j", "text"),
+            new Sample(10, "item k", "image"),
+            new Sample(11, "item l", "image"),
             new Sample(12, "item m", "video"),
-            new Sample(13, "item n", "video"),
+            new Sample(13, "item n", "image"),
             new Sample(14, "item o", "video")
     };
 

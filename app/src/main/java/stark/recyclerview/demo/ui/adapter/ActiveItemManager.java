@@ -3,6 +3,7 @@ package stark.recyclerview.demo.ui.adapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 
 import stark.android.appbase.widget.recyclerview.BaseItem;
@@ -23,6 +24,8 @@ public class ActiveItemManager {
     int firstVisiblePosition;
     int lastVisiblePosition;
 
+    SparseArray<View> activeView = new SparseArray<>();
+
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         if (dy > 0) {
             scrollDirection = ScrollDirection.UP;
@@ -35,38 +38,37 @@ public class ActiveItemManager {
         firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
         lastVisiblePosition = linearLayoutManager.findLastVisibleItemPosition();
         int visibleItemCount = lastVisiblePosition - firstVisiblePosition + 1;
-        Log.d("jihongwen", "firstVisiblePosition:" + firstVisiblePosition);
-        Log.d("jihongwen", "lastVisiblePosition:" + lastVisiblePosition);
-        Log.d("jihongwen", "visibleItemCount:" + visibleItemCount);
-
         int state = recyclerView.getScrollState();
         switch (state) {
             case RecyclerView.SCROLL_STATE_IDLE:
-            case RecyclerView.SCROLL_STATE_DRAGGING:
-            case RecyclerView.SCROLL_STATE_SETTLING:
-                for (int i = 0; i < visibleItemCount; i++) {
-                    View view = recyclerView.getChildAt(i);
-                    BaseItem baseItem = (BaseItem) view.getTag();
-                    if (baseItem.getViewType() == ViewType.VIDEO) {
-                        Log.d("jihongwen", "onScrolled video item " + i);
-                        int percents = baseItem.getVisibilityPercents(view);
-                        if (percents > 50) {
-                            baseItem.onActive(view, i);
-                        } else {
-                            baseItem.onDeactivate(view, i);
-                        }
-                    } else {
-                        Log.d("jihongwen", "onScrolled ViewType not video " + i);
-                    }
-                }
+                addActiveView(recyclerView, visibleItemCount);
+                checkActive();
                 Log.d("jihongwen", "onScrolled SCROLL_STATE_IDLE");
                 break;
-//            case RecyclerView.SCROLL_STATE_DRAGGING:
-//            case RecyclerView.SCROLL_STATE_SETTLING:
-
+            case RecyclerView.SCROLL_STATE_DRAGGING:
+            case RecyclerView.SCROLL_STATE_SETTLING:
+                break;
         }
+    }
 
+    private void checkActive() {
+        for (int i = 0; i < activeView.size(); i++) {
+            View view = activeView.get(i);
+            BaseItem baseItem = (BaseItem) view.getTag();
+            int percent = baseItem.getVisibilityPercents(view);
+            if (percent > 50) {
+                baseItem.onActive(view);
+            } else {
+                baseItem.onDeactivate(view);
+            }
+        }
+    }
 
+    private void addActiveView(RecyclerView recyclerView, int visibleItemCount) {
+        for (int i = 0; i < visibleItemCount; i++) {
+            View view = recyclerView.getChildAt(i);
+            activeView.append(i, view);
+        }
     }
 
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -79,37 +81,9 @@ public class ActiveItemManager {
         switch (mNewState) {
             case RecyclerView.SCROLL_STATE_IDLE:
                 scrollDirection = ScrollDirection.IDLE;
-                for (int i = 0; i < visibleItemCount; i++) {
-                    View view = recyclerView.getChildAt(i);
-                    if (view == null) {
-                        Log.d("jihongwen", "onScrolled view is null " + i);
-                        continue;
-                    }
-                    BaseItem baseItem = (BaseItem) view.getTag();
-                    if (baseItem.getViewType() == ViewType.VIDEO) {
-                        Log.d("jihongwen", "onScrollStateChanged video item " + i);
-                        int percents = baseItem.getVisibilityPercents(view);
-                        if (percents > 50) {
-                            baseItem.onActive(view, i);
-                        } else {
-                            baseItem.onDeactivate(view, i);
-                        }
-                    } else {
-                        Log.d("jihongwen", "onScrolled ViewType not video " + i);
-                    }
-                }
+                addActiveView(recyclerView, visibleItemCount);
+                checkActive();
                 Log.d("jihongwen", "onScrollStateChanged SCROLL_STATE_IDLE");
-
-                switch (scrollDirection) {
-                    case UP:
-                        // 底部视频显示超过一半
-                        Log.d("jihongwen", "底部视频显示超过一半 up");
-                        break;
-                    case DOWN:
-                        // 顶部视频显示超过一半
-                        Log.d("jihongwen", "顶部视频显示超过一半 down");
-                        break;
-                }
                 break;
             case RecyclerView.SCROLL_STATE_DRAGGING:
                 Log.d("jihongwen", "mNewState: SCROLL_STATE_DRAGGING");
