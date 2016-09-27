@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 
 public class TextItem extends DefaultItem {
 
-    public TextItem(ViewGroup parent) {
-        super(parent);
+    public TextItem(ViewGroup parent, int viewType) {
+        super(parent, viewType);
     }
+
+
 }

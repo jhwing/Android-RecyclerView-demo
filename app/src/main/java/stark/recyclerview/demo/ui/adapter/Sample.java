@@ -10,6 +10,8 @@ public class Sample {
 
     public String type;
 
+    public boolean isPlay;
+
     public Sample(String content, String type) {
         this.content = content;
         this.type = type;

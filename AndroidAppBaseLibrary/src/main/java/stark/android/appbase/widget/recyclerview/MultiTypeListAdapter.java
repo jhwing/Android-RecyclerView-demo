@@ -20,6 +20,11 @@ public abstract class MultiTypeListAdapter<T> extends RecyclerView.Adapter<Multi
         holder.onBindView(getItem(getItemViewType(position), position));
     }
 
+    @Override
+    public void onViewRecycled(MultiTypeViewHolder holder) {
+        super.onViewRecycled(holder);
+    }
+
     public abstract T getItem(int viewType, int position);
 
     public abstract BaseItem<?> createItemView(ViewGroup parent, int viewType);

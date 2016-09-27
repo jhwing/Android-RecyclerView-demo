@@ -17,12 +17,12 @@ public class ItemViewFactory {
     public static BaseItem createItem(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ViewType.TEXT:
-                return new TextItem(parent);
+                return new TextItem(parent, viewType);
             case ViewType.IMAGE:
-                return new ImageItem(parent);
+                return new ImageItem(parent, viewType);
             case ViewType.VIDEO:
-                return new VideoItem(parent);
+                return new VideoItem(parent, viewType);
         }
-        return new DefaultItem(parent);
+        return new DefaultItem(parent, viewType);
     }
 }

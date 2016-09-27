@@ -22,14 +22,11 @@ public class MultiTypeViewHolder<T> extends RecyclerView.ViewHolder {
         if (baseItem != null) {
             baseItem.onCreateView(rootView);
         }
-
     }
 
     protected void onBindView(T t) {
         if (baseItem != null) {
-            baseItem.onBindView(t);
+            baseItem.onBindView(t, this);
         }
     }
-
-
 }

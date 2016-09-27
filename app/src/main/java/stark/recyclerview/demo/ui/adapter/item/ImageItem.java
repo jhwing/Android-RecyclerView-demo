@@ -1,5 +1,6 @@
 package stark.recyclerview.demo.ui.adapter.item;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,8 +17,8 @@ public class ImageItem extends DefaultItem {
 
     ImageView item_icon;
 
-    public ImageItem(ViewGroup parent) {
-        super(parent);
+    public ImageItem(ViewGroup parent, int viewType) {
+        super(parent, viewType);
     }
 
     @Override
@@ -32,8 +33,7 @@ public class ImageItem extends DefaultItem {
     }
 
     @Override
-    public void onBindView(Sample sample) {
-        super.onBindView(sample);
-        item_icon.setImageResource(R.mipmap.ic_launcher);
+    public void onBindView(Sample sample, RecyclerView.ViewHolder viewHolder) {
+        super.onBindView(sample, viewHolder);
     }
 }

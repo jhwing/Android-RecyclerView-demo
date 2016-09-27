@@ -1,5 +1,6 @@
 package stark.android.appbase.widget.recyclerview;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
@@ -12,7 +13,9 @@ public interface ItemInterface<T> {
 
     void onCreateView(View rootView);
 
-    void onBindView(T t);
+    void onBindView(T t, RecyclerView.ViewHolder viewHolder);
 
     View getRootView();
+
+    int getViewType();
 }
